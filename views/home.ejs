@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes|Home</title>
+    <link rel="stylesheet" href="/stylesheet/home.css">
+</head>
+<body>
+    <div class="modal">
+        <div class="modalContent">
+            <form class="login">
+                <label for="loginEmail">Email</label>
+                <input type="text" id="loginEmail" name="loginEmail">
+                <label for="loginPassword">Passsword</label>
+                <input type="text" id="loginPassword" name="loginPassword">
+                <button onclick="loginFunction(this)">login</button>
+            </form>
+            <form class="signup">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+                <button onclick="signupFunction(this)">signup</button>
+            </form>
+            <form class="logout" action="/users/logout" method="get">
+                <label for="logout">Logout?</label>
+                <input type="submit">
+            </form>
+            <form class="info" action="/users/create" method="post">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+    <header>
+        <h2>NotesCraft</h2>
+        <div class="headerRight">
+            <ul class="headerMenu">
+                <a href="/"><li>Home</li></a>
+                <a href="#"><li onclick="showNotes(this)">Notes</li></a>
+                <li>About</li>
+                <li class="accounts">Accounts
+
+                    <ul class="submenu">
+                        <div>
+                            <li onclick="showLogin()">Login</li>
+                            <li onclick="showSignup()">Signup</li>
+                            <li onclick="showLogout()">Logout</li>
+                            <li onclick="showInfo()">View User info</li>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <section>
+            <form>
+                <label>Title</label>
+                <input type="text" id="title" name="title">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description">
+                <button type="button" onclick="createNotes(this)">Add Notes</button>
+            </form>
+        </section>
+        <section>
+            <button onclick="showNotes(this)">ShowNotes</button>
+        </section>
+    </main>
+    <div class="details" style="display:none;" data-details="<%=JSON.stringify({name,id}) %>"></div>
+    <script src="/scripts/home.js"></script>
+</body>
+</html>

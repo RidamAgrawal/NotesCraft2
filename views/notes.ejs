@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes|notes</title>
+    <link rel="stylesheet" href="/stylesheet/notes.css">
+</head>
+<body>
+    <header></header>
+    <main>
+        <section>
+            <button onclick="showNotes(this)">View Notes</button>
+            <section>
+                <form>
+                    <label>Title</label>
+                    <input type="text" id="title" name="title">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description">
+                    <button type="button" onclick="createNotes(this)">Add Notes</button>
+                </form>
+            </section>
+        </section>
+        <ul class="showItems"></ul>
+    </main>
+    <div class="details" style="display:none;" data-details="<%=JSON.stringify(Userid)%>"></div>
+    <script>
+        const details=document.querySelector('.details');
+        const NotesContainer=document.querySelector('.showItems');
+        const url=new URL(window.location.href);
+
+        let {name,id}=JSON.parse(details.dataset.details);
+
+        async function showNotes(e){
+            if(!id){
+                window.location.href=`${url.origin}/home`;
+                return;
+            }
+            
+            let rs=await fetch(`${url.origin}/notes/getNotes`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    Userid:id
+                })
+            })
+            .then(res=>res.json());
+            
+            e.parentElement.nextElementSibling.innerHTML='';
+            Array.from(rs).forEach(i=>{
+                e.parentElement.nextElementSibling.innerHTML+=`<li data-id='${i._id}'><h2>${i.title}</h2><p>${i.description}</p><div class="icons"><svg onclick="deleteNotes(this)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#424242"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg><svg onclick="editNotes()" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#424242"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></div></li>`;
+            });
+        }
+
+        
+        async function createNotes(e){
+            let title=e.parentElement.children[1].value,description=e.parentElement.children[3].value;
+            if(!id){
+                e.parentElement.innerHTML+=`<div class="error">please login first</div>`;
+                console.log('please login first');
+                return;
+            }
+            let rs=await fetch(`${url.origin}/notes/create`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({title,description,Userid:id})
+            })
+            .then(res=>res.json());
+            if(rs){
+                e.parentElement.children[1].value='';
+                e.parentElement.children[3].value='';
+                console.log('notes added');
+            }
+        }
+
+        async function deleteNotes(e){
+            let id=e.parentElement.parentElement.dataset.id;
+            let rs=await fetch(`${url.origin}/notes/delete`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({id})
+            })
+            .then(res=>res.json());
+            if(rs){
+                e.parentElement.parentElement.remove();
+                console.log('notes deleted');
+            }
+        }
+        async function editNotes(e){
+            let id=e.parentElement.parentElement.dataset.id;
+            let rs=await fetch(`${url.origin}/notes/edit`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({id})
+            })
+            .then(res=>res.json());
+            if(rs){
+                console.log('notes edited');
+            }
+        }
+    </script>
+</body>
+</html>

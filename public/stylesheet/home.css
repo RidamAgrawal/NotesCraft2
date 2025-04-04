@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family: 'Roboto',sans-serif;
+    background-color: #f0f0f0;
+    color:#333;
+}
+
+.modal{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color:rgba(0,0,0,0.2);
+}
+.modal.show{
+    display: block;
+}
+.modalContent{
+    margin: 2% 12.5%;
+    padding: 2% 0;
+    background-color: #f0f0f0;
+}
+.modalContent .login,.modalContent .signup,.modalContent .logout,.modalContent .info{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    gap:20px;
+}
+.modalContent .login.show,.modalContent .signup.show,.modalContent .logout.show,.modalContent .info.show{
+    display: flex;
+}
+header{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1% 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .headerMenu{
+    list-style-type: none;
+    display: flex;
+    gap: 2%;
+}
+header .headerMenu *{
+    cursor: pointer;
+}
+header .headerMenu a{
+    text-decoration: none;
+    color: inherit;
+}
+header .headerMenu .accounts .submenu{
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: all 0.3s ease-in-out;
+    position:absolute;
+    > div{
+        overflow-y: hidden;
+    }
+}
+header .headerMenu .accounts:hover{
+    .submenu{grid-template-rows: 1fr;}
+}
