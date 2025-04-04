@@ -8,6 +8,7 @@ const info=document.querySelector(".info");
 const notesArea=document.querySelector('#notesArea');
 const details=document.querySelector('.details');
 const url=new URL(window.location.href);
+let {name,id}=JSON.parse(details.dataset.details);
 
 function showLogin(){
     if(modal.classList.contains('show')){
@@ -82,6 +83,10 @@ async function loginFunction(e){
         console.log(rs.error);
         return;
     }
+    else{
+        name=rs.name;
+        id=rs.id;
+    }
     closeModal();
 
 } 
@@ -99,17 +104,14 @@ async function signupFunction(e){
         e.parentElement.innerHTML+=`<div class="error">${rs.error}</div>`;
         console.log(rs.error);
         return;
-    }
-    if(rs.error){
-        e.parentElement.innerHTML+=`<div class="error">${rs.error}</div>`;
-        console.log(rs.error);
-        return;
+    }else{
+        name=rs.name;
+        id=rs.id;
     }
     closeModal();
 }
 
 
-let {name,id}=JSON.parse(details.dataset.details);
 
 async function createNotes(e){
     let title=e.parentElement.children[1].value,description=e.parentElement.children[3].value;
